@@ -1,6 +1,6 @@
 # 宝可梦 心魂律动
 
-这是基于[pret的绿宝石反编译项目](https://github.com/pret/pokeemerald)及的宝可梦粉丝二次改版作品。
+这是基于[pret的绿宝石反编译项目](https://github.com/pret/pokeemerald)的宝可梦粉丝二次改版作品。
 
 # 声明
 * 本作故事全属虚构，如有雷同纯属巧合。
