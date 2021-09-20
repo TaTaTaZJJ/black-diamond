@@ -1,31 +1,23 @@
-# Pokémon Emerald
+# 宝可梦 心魂律动
 
-This is a decompilation of Pokémon Emerald.
+这是基于[pret的绿宝石反编译项目](https://github.com/pret/pokeemerald)及的宝可梦粉丝二次改版作品。
 
-It builds the following ROM:
+# 声明
+* 本作故事全属虚构，如有雷同纯属巧合。
+* 本作源码仅供学习参考，禁止用于商业用途，如过通过任何沟道花费入手此作品，请尽快通过有效平台举报。
 
-* [**pokeemerald.gba**](https://datomatic.no-intro.org/index.php?page=show_record&s=23&n=1961) `sha1: f3ae088181bf583e55daf962a92bb46f4f1d07b7`
+# 禁止事项
+* 杜绝泄露本作剧情相关文件。
+* 未经许可禁止对本作源码进行编译，发布，或对本作做二次修改。
+* 未经许可禁止使用本作一切美术素材。
 
-To set up the repository, see [INSTALL.md](INSTALL.md).
+# 特别鸣谢
+* [pret相关人员 — 绿宝石反编译项目及技术文献](https://github.com/pret)
+* [DizzyEggg和rh-hideout相关人员 — 后世代战斗引擎，道具及精灵添加](https://github.com/rh-hideout)
+* [ghoulslash — 部分游戏功能及体验优化改动](https://github.com/ghoulslash)
+* [Xhyzi — 昼夜功能源码](https://github.com/Xhyzi/pokeemerald/tree/day-and-night)
+* [porymap相关人员 — porymap](https://github.com/huderlem/porymap)
+* [poryscript相关人员 — poryscript](https://github.com/huderlem/poryscript)
 
-
-## See also
-
-Other disassembly and/or decompilation projects:
-* [**Pokémon Red and Blue**](https://github.com/pret/pokered)
-* [**Pokémon Gold and Silver (Space World '97 demo)**](https://github.com/pret/pokegold-spaceworld)
-* [**Pokémon Yellow**](https://github.com/pret/pokeyellow)
-* [**Pokémon Trading Card Game**](https://github.com/pret/poketcg)
-* [**Pokémon Pinball**](https://github.com/pret/pokepinball)
-* [**Pokémon Stadium**](https://github.com/pret/pokestadium)
-* [**Pokémon Gold and Silver**](https://github.com/pret/pokegold)
-* [**Pokémon Crystal**](https://github.com/pret/pokecrystal)
-* [**Pokémon Ruby and Sapphire**](https://github.com/pret/pokeruby)
-* [**Pokémon Pinball: Ruby & Sapphire**](https://github.com/pret/pokepinballrs)
-* [**Pokémon FireRed and LeafGreen**](https://github.com/pret/pokefirered)
-* [**Pokémon Mystery Dungeon: Red Rescue Team**](https://github.com/pret/pmd-red)
-
-
-## Contacts
-
-You can find us on [Discord](https://discord.gg/d5dubZ3) and [IRC](https://kiwiirc.com/client/irc.freenode.net/?#pret).
+# 联系
+<a href="mailto:2519784590@qq.com">作者qq邮箱</a>
