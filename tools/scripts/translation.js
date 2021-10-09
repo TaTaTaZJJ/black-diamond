@@ -37,8 +37,8 @@ fs.readFile(filename, (err, jsonBuffer) => {
                     let regex = new RegExp(text.label + '\\[\\].*_\\(.*\\);', 'g');
                     let replacingWord = text.label + "[] = _(\"" + newText + "\");";
                     if (!regex.test(targetData)) {
-                        regex = new RegExp(text.label + '\\](.*)_\\("(.*)\\);', 'g');
-                        replacingWord = text.label + "] = _(\"" + newText + "\");";
+                        regex = new RegExp(text.label + '\\](.*)_\\("(.*)\\)', 'g');
+                        replacingWord = text.label + "] = _(\"" + newText + "\")";
                         if (!regex.test(targetData)) {
                             regex = new RegExp(text.label + '\\[\\](.*)_\\((\\n[^\\)]+){1,}"\\);', 'g')
                             newText = newText.replace(new RegExp(escapeRegExp('\\l'), 'g'), '\\l"\n"');
