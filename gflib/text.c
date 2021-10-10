@@ -1375,34 +1375,138 @@ s32 GetStringWidth(u8 fontId, const u8 *str, s16 letterSpacing)
 
     while (*str != EOS)
     {
-        switch (*str)
+        if (*str <= 0x1E)
         {
-        case CHAR_NEWLINE:
-            if (lineWidth > width)
-                width = lineWidth;
-            lineWidth = 0;
-            break;
-        case PLACEHOLDER_BEGIN:
-            switch (*++str)
+            if (*str > 0x0 && *str <= 0x5)
             {
-                case PLACEHOLDER_ID_STRING_VAR_1:
-                    bufferPointer = gStringVar1;
-                    break;
-                case PLACEHOLDER_ID_STRING_VAR_2:
-                    bufferPointer = gStringVar2;
-                    break;
-                case PLACEHOLDER_ID_STRING_VAR_3:
-                    bufferPointer = gStringVar3;
-                    break;
-                default:
-                    return 0;
+                glyphWidth = func(*++str | ((*str - 1) * 0x100 + 0x1000), isJapanese);
             }
-        case CHAR_DYNAMIC:
-            if (bufferPointer == NULL)
-                bufferPointer = DynamicPlaceholderTextUtil_GetPlaceholderPtr(*++str);
-            while (*bufferPointer != EOS)
+            else if (*str >= 0x7 && *str <= 0x1A)
             {
-                glyphWidth = func(*bufferPointer++, isJapanese);
+                glyphWidth = func(*++str | ((*str - 1) * 0x100 + 0x1500), isJapanese);
+            }
+            else if (*str >= 0x1C)
+            {
+                glyphWidth = func(*++str | ((*str - 1) * 0x100 + 0x2900), isJapanese);
+            }
+            if (minGlyphWidth > 0)
+            {
+                if (glyphWidth < minGlyphWidth)
+                    glyphWidth = minGlyphWidth;
+                lineWidth += glyphWidth;
+            }
+            else
+            {
+                lineWidth += glyphWidth;
+                if (isJapanese && str[1] != EOS)
+                    lineWidth += localLetterSpacing;
+            }
+        }
+        else
+        {
+            switch (*str)
+            {
+            case CHAR_NEWLINE:
+                if (lineWidth > width)
+                    width = lineWidth;
+                lineWidth = 0;
+                break;
+            case PLACEHOLDER_BEGIN:
+                switch (*++str)
+                {
+                    case PLACEHOLDER_ID_STRING_VAR_1:
+                        bufferPointer = gStringVar1;
+                        break;
+                    case PLACEHOLDER_ID_STRING_VAR_2:
+                        bufferPointer = gStringVar2;
+                        break;
+                    case PLACEHOLDER_ID_STRING_VAR_3:
+                        bufferPointer = gStringVar3;
+                        break;
+                    default:
+                        return 0;
+                }
+            case CHAR_DYNAMIC:
+                if (bufferPointer == NULL)
+                    bufferPointer = DynamicPlaceholderTextUtil_GetPlaceholderPtr(*++str);
+                while (*bufferPointer != EOS)
+                {
+                    glyphWidth = func(*bufferPointer++, isJapanese);
+                    if (minGlyphWidth > 0)
+                    {
+                        if (glyphWidth < minGlyphWidth)
+                            glyphWidth = minGlyphWidth;
+                        lineWidth += glyphWidth;
+                    }
+                    else
+                    {
+                        lineWidth += glyphWidth;
+                        if (isJapanese && str[1] != EOS)
+                            lineWidth += localLetterSpacing;
+                    }
+                }
+                bufferPointer = 0;
+                break;
+            case EXT_CTRL_CODE_BEGIN:
+                switch (*++str)
+                {
+                case EXT_CTRL_CODE_COLOR_HIGHLIGHT_SHADOW:
+                    ++str;
+                case EXT_CTRL_CODE_PLAY_BGM:
+                case EXT_CTRL_CODE_PLAY_SE:
+                    ++str;
+                case EXT_CTRL_CODE_COLOR:
+                case EXT_CTRL_CODE_HIGHLIGHT:
+                case EXT_CTRL_CODE_SHADOW:
+                case EXT_CTRL_CODE_PALETTE:
+                case EXT_CTRL_CODE_PAUSE:
+                case EXT_CTRL_CODE_ESCAPE:
+                case EXT_CTRL_CODE_SHIFT_TEXT:
+                case EXT_CTRL_CODE_SHIFT_DOWN:
+                    ++str;
+                    break;
+                case EXT_CTRL_CODE_SIZE:
+                    func = GetFontWidthFunc(*++str);
+                    if (func == NULL)
+                        return 0;
+                    if (letterSpacing == -1)
+                        localLetterSpacing = GetFontAttribute(*str, FONTATTR_LETTER_SPACING);
+                    break;
+                case EXT_CTRL_CODE_CLEAR:
+                    glyphWidth = *++str;
+                    lineWidth += glyphWidth;
+                    break;
+                case EXT_CTRL_CODE_SKIP:
+                    lineWidth = *++str;
+                    break;
+                case EXT_CTRL_CODE_CLEAR_TO:
+                    if (*++str > lineWidth)
+                        lineWidth = *str;
+                    break;
+                case EXT_CTRL_CODE_MIN_LETTER_SPACING:
+                    minGlyphWidth = *++str;
+                    break;
+                case EXT_CTRL_CODE_JPN:
+                    isJapanese = 1;
+                    break;
+                case EXT_CTRL_CODE_ENG:
+                    isJapanese = 0;
+                    break;
+                case EXT_CTRL_CODE_RESET_SIZE:
+                case EXT_CTRL_CODE_PAUSE_UNTIL_PRESS:
+                case EXT_CTRL_CODE_WAIT_SE:
+                case EXT_CTRL_CODE_FILL_WINDOW:
+                default:
+                    break;
+                }
+                break;
+            case CHAR_KEYPAD_ICON:
+            case CHAR_EXTRA_SYMBOL:
+                if (*str == CHAR_EXTRA_SYMBOL)
+                    glyphWidth = func(*++str | 0x100, isJapanese);
+                else
+                    glyphWidth = GetKeypadIconWidth(*++str);
+
                 if (minGlyphWidth > 0)
                 {
                     if (glyphWidth < minGlyphWidth)
@@ -1415,100 +1519,26 @@ s32 GetStringWidth(u8 fontId, const u8 *str, s16 letterSpacing)
                     if (isJapanese && str[1] != EOS)
                         lineWidth += localLetterSpacing;
                 }
-            }
-            bufferPointer = 0;
-            break;
-        case EXT_CTRL_CODE_BEGIN:
-            switch (*++str)
-            {
-            case EXT_CTRL_CODE_COLOR_HIGHLIGHT_SHADOW:
-                ++str;
-            case EXT_CTRL_CODE_PLAY_BGM:
-            case EXT_CTRL_CODE_PLAY_SE:
-                ++str;
-            case EXT_CTRL_CODE_COLOR:
-            case EXT_CTRL_CODE_HIGHLIGHT:
-            case EXT_CTRL_CODE_SHADOW:
-            case EXT_CTRL_CODE_PALETTE:
-            case EXT_CTRL_CODE_PAUSE:
-            case EXT_CTRL_CODE_ESCAPE:
-            case EXT_CTRL_CODE_SHIFT_TEXT:
-            case EXT_CTRL_CODE_SHIFT_DOWN:
-                ++str;
                 break;
-            case EXT_CTRL_CODE_SIZE:
-                func = GetFontWidthFunc(*++str);
-                if (func == NULL)
-                    return 0;
-                if (letterSpacing == -1)
-                    localLetterSpacing = GetFontAttribute(*str, FONTATTR_LETTER_SPACING);
+            case CHAR_PROMPT_SCROLL:
+            case CHAR_PROMPT_CLEAR:
                 break;
-            case EXT_CTRL_CODE_CLEAR:
-                glyphWidth = *++str;
-                lineWidth += glyphWidth;
-                break;
-            case EXT_CTRL_CODE_SKIP:
-                lineWidth = *++str;
-                break;
-            case EXT_CTRL_CODE_CLEAR_TO:
-                if (*++str > lineWidth)
-                    lineWidth = *str;
-                break;
-            case EXT_CTRL_CODE_MIN_LETTER_SPACING:
-                minGlyphWidth = *++str;
-                break;
-            case EXT_CTRL_CODE_JPN:
-                isJapanese = 1;
-                break;
-            case EXT_CTRL_CODE_ENG:
-                isJapanese = 0;
-                break;
-            case EXT_CTRL_CODE_RESET_SIZE:
-            case EXT_CTRL_CODE_PAUSE_UNTIL_PRESS:
-            case EXT_CTRL_CODE_WAIT_SE:
-            case EXT_CTRL_CODE_FILL_WINDOW:
             default:
+                glyphWidth = func(*str, isJapanese);
+                if (minGlyphWidth > 0)
+                {
+                    if (glyphWidth < minGlyphWidth)
+                        glyphWidth = minGlyphWidth;
+                    lineWidth += glyphWidth;
+                }
+                else
+                {
+                    lineWidth += glyphWidth;
+                    if (isJapanese && str[1] != EOS)
+                        lineWidth += localLetterSpacing;
+                }
                 break;
             }
-            break;
-        case CHAR_KEYPAD_ICON:
-        case CHAR_EXTRA_SYMBOL:
-            if (*str == CHAR_EXTRA_SYMBOL)
-                glyphWidth = func(*++str | 0x100, isJapanese);
-            else
-                glyphWidth = GetKeypadIconWidth(*++str);
-
-            if (minGlyphWidth > 0)
-            {
-                if (glyphWidth < minGlyphWidth)
-                    glyphWidth = minGlyphWidth;
-                lineWidth += glyphWidth;
-            }
-            else
-            {
-                lineWidth += glyphWidth;
-                if (isJapanese && str[1] != EOS)
-                    lineWidth += localLetterSpacing;
-            }
-            break;
-        case CHAR_PROMPT_SCROLL:
-        case CHAR_PROMPT_CLEAR:
-            break;
-        default:
-            glyphWidth = func(*str, isJapanese);
-            if (minGlyphWidth > 0)
-            {
-                if (glyphWidth < minGlyphWidth)
-                    glyphWidth = minGlyphWidth;
-                lineWidth += glyphWidth;
-            }
-            else
-            {
-                lineWidth += glyphWidth;
-                if (isJapanese && str[1] != EOS)
-                    lineWidth += localLetterSpacing;
-            }
-            break;
         }
         ++str;
     }
@@ -1747,6 +1777,8 @@ u32 GetGlyphWidthFont0(u16 glyphId, bool32 isJapanese)
 {
     if (isJapanese == TRUE)
         return 8;
+    else if (glyphId >= 0x1000) //汉字字符判定
+        return (glyphId >= 0x2B5E && glyphId <= 0x2B66) ? gFont0ChineseGlyphWidths[glyphId - 0x2B5E] : 12;
     else
         return gFont0LatinGlyphWidths[glyphId];
 }
@@ -1797,6 +1829,8 @@ u32 GetGlyphWidthFont7(u16 glyphId, bool32 isJapanese)
 {
     if (isJapanese == TRUE)
         return 8;
+    else if (glyphId >= 0x1000) //汉字字符判定
+        return (glyphId >= 0x2B5E && glyphId <= 0x2B66) ? gFont1ChineseGlyphWidths[glyphId - 0x2B5E] : 12;
     else
         return gFont7LatinGlyphWidths[glyphId];
 }
@@ -1847,6 +1881,8 @@ u32 GetGlyphWidthFont8(u16 glyphId, bool32 isJapanese)
 {
     if (isJapanese == TRUE)
         return 8;
+    else if (glyphId >= 0x1000) //汉字字符判定
+        return (glyphId >= 0x2B5E && glyphId <= 0x2B66) ? gFont0ChineseGlyphWidths[glyphId - 0x2B5E] : 12;
     else
         return gFont8LatinGlyphWidths[glyphId];
 }
@@ -1899,6 +1935,8 @@ u32 GetGlyphWidthFont2(u16 glyphId, bool32 isJapanese)
 {
     if (isJapanese == TRUE)
         return gFont2JapaneseGlyphWidths[glyphId];
+    else if (glyphId >= 0x1000) //汉字字符判定
+        return (glyphId >= 0x2B5E && glyphId <= 0x2B66) ? gFont1ChineseGlyphWidths[glyphId - 0x2B5E] : 12;
     else
         return gFont2LatinGlyphWidths[glyphId];
 }
@@ -1949,6 +1987,8 @@ u32 GetGlyphWidthFont1(u16 glyphId, bool32 isJapanese)
 {
     if (isJapanese == TRUE)
         return 8;
+    else if (glyphId >= 0x1000) //汉字字符判定
+        return (glyphId >= 0x2B5E && glyphId <= 0x2B66) ? gFont1ChineseGlyphWidths[glyphId - 0x2B5E] : 12;
     else
         return gFont1LatinGlyphWidths[glyphId];
 }
