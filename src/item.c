@@ -171,7 +171,7 @@ void ApplyNewEncryptionKeyToBagItems_(u32 newKey) // really GF?
 
 void Deserialize8BitItemSlots(void) // 解压8位储存的道具
 {
-    u16 i;
+    int i;
     u8 bit;
     u16 itemId;
 
@@ -185,7 +185,9 @@ void Deserialize8BitItemSlots(void) // 解压8位储存的道具
     {
         bit = i % 8;
         if (gSaveBlock1Ptr->bagPocket_TMHMs[i / 8] & (1<<bit))
+        {    
             AddBagItem(i + ITEM_TM_START, 1);
+        }
     }
 
     // 重要道具
@@ -455,10 +457,10 @@ bool8 CheckBagHasSpace(u16 itemId, u16 count)
 
 static void set1BitItemOwned(u16 itemId, u8 pocket)
 {   
+    int i;
     u8* flagByte;
-    u16 i;
     switch (pocket)
-     {
+    {
     case EXPLORATIONKIT_POCKET:
         for (i = 0; i < BAG_EXPLORATIONKIT_COUNT; i++)
         {
@@ -471,8 +473,9 @@ static void set1BitItemOwned(u16 itemId, u8 pocket)
         }
         break;
     case TMHM_POCKET:
-        flagByte = &gSaveBlock1Ptr->bagPocket_TMHMs[(itemId - ITEM_TM_START) / 8];
-        *flagByte |= (1 << ((itemId - ITEM_TM_START) % 8));
+        i = itemId - ITEM_TM_START;
+        flagByte = &gSaveBlock1Ptr->bagPocket_TMHMs[i / 8];
+        *flagByte |= (1 << (i % 8));
         break;
     case KEYITEMS_POCKET:
         for (i = 0; i < BAG_KEYITEMS_COUNT; i++)
@@ -512,8 +515,8 @@ static void set1BitItemOwned(u16 itemId, u8 pocket)
 
 static void unset1BitItemOwned(u16 itemId, u8 pocket)
 {   
-      u8* flagByte;
-    u16 i;
+    int i;
+    u8* flagByte;
     switch (pocket)
      {
     case EXPLORATIONKIT_POCKET:
@@ -528,8 +531,9 @@ static void unset1BitItemOwned(u16 itemId, u8 pocket)
         }
         break;
     case TMHM_POCKET:
-        flagByte = &gSaveBlock1Ptr->bagPocket_TMHMs[(itemId - ITEM_TM_START) / 8];
-        *flagByte &= ~(1 << ((itemId - ITEM_TM_START) % 8));
+        i = itemId - ITEM_TM_START;
+        flagByte = &gSaveBlock1Ptr->bagPocket_TMHMs[i / 8];
+        *flagByte &= ~(1 << (i % 8));
         break;
     case KEYITEMS_POCKET:
         for (i = 0; i < BAG_KEYITEMS_COUNT; i++)
@@ -679,7 +683,9 @@ bool8 AddBagItem(u16 itemId, u16 count)
                             || pocket == COSTUMES_POCKET
                             || pocket == ZCRYSTALS_POCKET
                             || pocket == KEYITEMS_POCKET)
+                        {
                             set1BitItemOwned(itemId, pocket);
+                        }
                         count = 0;
                         break;
                     }
@@ -760,7 +766,9 @@ bool8 RemoveBagItem(u16 itemId, u16 count)
                 || pocket == COSTUMES_POCKET
                 || pocket == ZCRYSTALS_POCKET
                 || pocket == KEYITEMS_POCKET)
+            {
                 unset1BitItemOwned(itemId, pocket);
+            }
 
             if (count == 0)
                 return TRUE;
@@ -790,7 +798,9 @@ bool8 RemoveBagItem(u16 itemId, u16 count)
                     || pocket == COSTUMES_POCKET
                     || pocket == ZCRYSTALS_POCKET
                     || pocket == KEYITEMS_POCKET)
+                {
                     unset1BitItemOwned(itemId, pocket);
+                }
                 
                 if (count == 0)
                     return TRUE;
