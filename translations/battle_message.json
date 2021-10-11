@@ -618,7 +618,7 @@
         },
         {
             "label": "sText_PlayerPickedUpMoney",
-            "zh": "{B_PLAYER_NAME}捡到了\\n{B_BUFF1}$！\\p",
+            "zh": "{B_PLAYER_NAME}捡到了\\n{B_BUFF1}¥！\\p",
             "en": "{B_PLAYER_NAME} picked up\\n¥{B_BUFF1}!\\p"
         },
         {

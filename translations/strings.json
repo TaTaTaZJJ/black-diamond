@@ -1498,17 +1498,17 @@
         },
         {
             "label": "gText_Var1AndYouWantedVar2",
-            "zh": "决定买{STR_VAR_1}？购买{STR_VAR_2}个？\\n你需要支付{STR_VAR_3}$。",
+            "zh": "决定买{STR_VAR_1}？购买{STR_VAR_2}个？\\n你需要支付{STR_VAR_3}¥。",
             "en": "{STR_VAR_1}? And you wanted {STR_VAR_2}?\\nThat will be ¥{STR_VAR_3}."
         },
         {
             "label": "gText_Var1IsItThatllBeVar2",
-            "zh": "{STR_VAR_1}，是吗？\\n你需要支付{STR_VAR_2}$。确定吗？",
+            "zh": "{STR_VAR_1}，是吗？\\n你需要支付{STR_VAR_2}¥。确定吗？",
             "en": "{STR_VAR_1}, is it?\\nThat'll be ¥{STR_VAR_2}. Do you want it?"
         },
         {
             "label": "gText_YouWantedVar1ThatllBeVar2",
-            "zh": "你想要{STR_VAR_1}吗？\\n你需要支付{STR_VAR_2}$。可以吗？",
+            "zh": "你想要{STR_VAR_1}吗？\\n你需要支付{STR_VAR_2}¥。可以吗？",
             "en": "You wanted {STR_VAR_1}?\\nThat'll be ¥{STR_VAR_2}. Will that be okay?"
         },
         {
@@ -1568,12 +1568,12 @@
         },
         {
             "label": "gText_ICanPayVar1",
-            "zh": "这样的话以{STR_VAR_1}$\\n的价格成交吧。",
+            "zh": "这样的话以{STR_VAR_1}¥\\n的价格成交吧。",
             "en": "I can pay ¥{STR_VAR_1}.\\nWould that be okay?"
         },
         {
             "label": "gText_TurnedOverVar1ForVar2",
-            "zh": "用{STR_VAR_2}交换\\n并得到了{STR_VAR_1}$。",
+            "zh": "用{STR_VAR_2}交换\\n并得到了{STR_VAR_1}¥。",
             "en": "Turned over the {STR_VAR_2}\\nand received ¥{STR_VAR_1}."
         },
         {
@@ -3003,17 +3003,17 @@
         },
         {
             "label": "gText_FreshWaterAndPrice",
-            "zh": "美味的水{CLEAR_TO 0x48}200$",
+            "zh": "美味的水{CLEAR_TO 0x48}200¥",
             "en": "FRESH WATER{CLEAR_TO 0x48}¥200"
         },
         {
             "label": "gText_SodaPopAndPrice",
-            "zh": "塞可汽水{CLEAR_TO 0x48}300$",
+            "zh": "塞可汽水{CLEAR_TO 0x48}300¥",
             "en": "SODA POP{CLEAR_TO 0x48}¥300"
         },
         {
             "label": "gText_LemonadeAndPrice",
-            "zh": "调味乳{CLEAR_TO 0x48}350$",
+            "zh": "调味乳{CLEAR_TO 0x48}350¥",
             "en": "LEMONADE{CLEAR_TO 0x48}¥350"
         },
         {
@@ -3118,12 +3118,12 @@
         },
         {
             "label": "gText_50CoinsAndPrice",
-            "zh": "50代币 1000$",
+            "zh": "50代币 1000¥",
             "en": " 50 COINS    ¥1,000"
         },
         {
             "label": "gText_500CoinsAndPrice",
-            "zh": "500代币 10000$",
+            "zh": "500代币 10000¥",
             "en": "500 COINS  ¥10,000"
         },
         {
