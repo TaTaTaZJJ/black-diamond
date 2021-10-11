@@ -32,6 +32,10 @@ struct BagPocket
 
 extern struct BagPocket gBagPockets[];
 extern struct ItemSlot gTmHmItemSlots[BAG_TMHM_COUNT];
+extern struct ItemSlot gKeyItemSlots[BAG_KEYITEMS_COUNT];
+extern struct ItemSlot gExplorationKitSlots[BAG_EXPLORATIONKIT_COUNT];
+extern struct ItemSlot gCostumeSlots[BAG_COSTUMES_COUNT];
+extern struct ItemSlot gZCrystalSlots[BAG_ZCRYSTALS_COUNT];
 
 void ApplyNewEncryptionKeyToBagItems(u32 newKey);
 void ApplyNewEncryptionKeyToBagItems_(u32 newKey);
@@ -47,6 +51,7 @@ bool8 AddBagItem(u16 itemId, u16 count);
 bool8 RemoveBagItem(u16 itemId, u16 count);
 u8 GetPocketByItemId(u16 itemId);
 void ClearItemSlots(struct ItemSlot *itemSlots, u8 itemCount);
+void ClearPcItemSlots(struct PcItemSlot *itemSlots, u8 itemCount);
 u8 CountUsedPCItemSlots(void);
 bool8 CheckPCHasItem(u16 itemId, u16 count);
 bool8 AddPCItem(u16 itemId, u16 count);
@@ -58,6 +63,7 @@ u16 BagGetQuantityByPocketPosition(u8 pocketId, u16 pocketPos);
 void CompactItemsInBagPocket(struct BagPocket *bagPocket);
 void SortBerriesOrTMHMs(struct BagPocket *bagPocket);
 void MoveItemSlotInList(struct ItemSlot* itemSlots_, u32 from, u32 to_);
+void MovePcItemSlotInList(struct PcItemSlot* itemSlots_, u32 from, u32 to_);
 void ClearBag(void);
 u16 CountTotalItemQuantityInBag(u16 itemId);
 bool8 AddPyramidBagItem(u16 itemId, u16 count);
@@ -77,6 +83,6 @@ u8 ItemId_GetBattleUsage(u16 itemId);
 ItemUseFunc ItemId_GetBattleFunc(u16 itemId);
 u8 ItemId_GetSecondaryId(u16 itemId);
 bool32 IsPinchBerryItemEffect(u16 holdEffect);
-void DeserializeTmHmItemSlots(void);
+void Deserialize8BitItemSlots(void);
 
 #endif // GUARD_ITEM_H

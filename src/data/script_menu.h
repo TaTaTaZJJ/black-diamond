@@ -932,10 +932,13 @@ const u8 *const gStdStrings[] =
     [STDSTRING_BATTLE_ARENA] = gText_BattleArena,
     [STDSTRING_BATTLE_PIKE] = gText_BattlePike,
     [STDSTRING_BATTLE_PYRAMID] = gText_BattlePyramid,
-    [STDSTRING_MEDICINES] = gText_Medicines,
+    [STDSTRING_MEDICINE] = gText_Medicine,
     [STDSTRING_BATTLEITEMS] = gText_BattleItems,
-    [STDSTRING_POWERUPS] = gText_PowerUps,
+    [STDSTRING_EXPLORATION_KIT] = gText_Exploration_Kit,
     [STDSTRING_COSTUMES] = gText_Costumes,
+    [STDSTRING_COLLECTION] = gText_Collection,
+    [STDSTRING_Z_CRYSTALS] = gText_Z_Crystals,
+    [STDSTRING_MEGA_STONES] = gText_Mega_Stones,
 };
 
 static const u8 sLinkServicesMultichoiceIds[] = 

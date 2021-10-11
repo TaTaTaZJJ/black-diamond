@@ -25,21 +25,123 @@ static bool8 CheckPyramidBagHasSpace(u16 itemId, u16 count);
 
 // EWRAM variables
 EWRAM_DATA struct BagPocket gBagPockets[POCKETS_COUNT] = {0};
+EWRAM_DATA struct ItemSlot gKeyItemSlots[BAG_KEYITEMS_COUNT] = {0};
+EWRAM_DATA struct ItemSlot gExplorationKitSlots[BAG_EXPLORATIONKIT_COUNT] = {0};
 EWRAM_DATA struct ItemSlot gTmHmItemSlots[BAG_TMHM_COUNT] = {0};
+EWRAM_DATA struct ItemSlot gCostumeSlots[BAG_COSTUMES_COUNT] = {0};
+EWRAM_DATA struct ItemSlot gZCrystalSlots[BAG_ZCRYSTALS_COUNT] = {0};
 
 // rodata
 #include "data/text/item_descriptions.h"
 #include "data/items.h"
 
+// 背包8位slots定义
+static const u16 sKeyItemList[BAG_KEYITEMS_COUNT] = {
+    ITEM_MEGA_BRACELET,
+    ITEM_SHINY_CHARM,
+    ITEM_OVAL_CHARM,
+    ITEM_Z_RING,
+    ITEM_GRACIDEA,
+    // 船票
+    ITEM_SS_TICKET,
+    ITEM_MYSTIC_TICKET,
+    ITEM_AURORA_TICKET,
+    ITEM_EON_TICKET,
+    ITEM_CONTEST_PASS,
+    ITEM_TRI_PASS,
+    ITEM_RAINBOW_PASS,
+    ITEM_OLD_SEA_MAP,
+    // 钥匙
+    ITEM_BASEMENT_KEY,
+    ITEM_ROOM_1_KEY,
+    ITEM_ROOM_2_KEY,
+    ITEM_ROOM_4_KEY,
+    ITEM_ROOM_6_KEY,
+    ITEM_STORAGE_KEY,
+    ITEM_CARD_KEY, 
+    ITEM_LIFT_KEY, 
+    ITEM_SECRET_KEY,
+    // 交换用
+    ITEM_DEVON_GOODS,
+    ITEM_BIKE_VOUCHER,
+    ITEM_LETTER, 
+    ITEM_SCANNER,
+    ITEM_METEORITE,
+    ITEM_TEA, 
+};
+
+static const u16 sExplorationKitList[BAG_EXPLORATIONKIT_COUNT] = {
+    ITEM_ESCAPE_ROPE,
+    ITEM_WAILMER_PAIL,
+    ITEM_MACH_BIKE,
+    ITEM_ACRO_BIKE,
+    ITEM_OLD_ROD,
+    ITEM_GOOD_ROD,
+    ITEM_SUPER_ROD,
+    ITEM_ITEMFINDER,
+    ITEM_DEVON_SCOPE,
+    ITEM_SILPH_SCOPE,
+    ITEM_SOOT_SACK,
+    ITEM_GO_GOGGLES,
+    ITEM_VS_SEEKER,
+    ITEM_FAME_CHECKER,
+    ITEM_POKE_FLUTE,
+    ITEM_POKEBLOCK_CASE,
+    ITEM_POWDER_JAR,
+    ITEM_COIN_CASE,
+};
+
+static const u16 sCostumeList[BAG_COSTUMES_COUNT] = {};
+
+static const u16 sZCrystalList[BAG_ZCRYSTALS_COUNT] = {
+    ITEM_NORMALIUM_Z,
+    ITEM_FIGHTINIUM_Z,
+    ITEM_FLYINIUM_Z,
+    ITEM_POISONIUM_Z,
+    ITEM_GROUNDIUM_Z,
+    ITEM_ROCKIUM_Z,
+    ITEM_BUGINIUM_Z,
+    ITEM_GHOSTIUM_Z,
+    ITEM_STEELIUM_Z,
+    ITEM_FIRIUM_Z,
+    ITEM_WATERIUM_Z,
+    ITEM_GRASSIUM_Z,
+    ITEM_ELECTRIUM_Z,
+    ITEM_PSYCHIUM_Z,
+    ITEM_ICIUM_Z,
+    ITEM_DRAGONIUM_Z,
+    ITEM_DARKINIUM_Z,
+    ITEM_FAIRIUM_Z,
+    ITEM_ALORAICHIUM_Z,
+    ITEM_DECIDIUM_Z,
+    ITEM_EEVIUM_Z,
+    ITEM_INCINIUM_Z,
+    ITEM_KOMMONIUM_Z,
+    ITEM_LUNALIUM_Z,
+    ITEM_LYCANIUM_Z,
+    ITEM_MARSHADIUM_Z,
+    ITEM_MEWNIUM_Z,
+    ITEM_MIMIKIUM_Z,
+    ITEM_PIKANIUM_Z,
+    ITEM_PIKASHUNIUM_Z,
+    ITEM_PRIMARIUM_Z,
+    ITEM_SNORLIUM_Z,
+    ITEM_SOLGANIUM_Z,
+    ITEM_TAPUNIUM_Z,
+    ITEM_ULTRANECROZIUM_Z,
+};
+
 // code
-static u16 GetBagItemQuantity(u16 *quantity)
+static u16 GetBagItemQuantity(u8 *quantity)
 {
-    return gSaveBlock2Ptr->encryptionKey ^ *quantity;
+    // return gSaveBlock2Ptr->encryptionKey ^ *quantity; // 原版的加密机制
+    return *quantity;
 }
 
-static void SetBagItemQuantity(u16 *quantity, u16 newValue)
+static void SetBagItemQuantity(u8 *quantity, u8 newValue)
 {
-    *quantity =  newValue ^ gSaveBlock2Ptr->encryptionKey;
+    // *quantity =  newValue ^ gSaveBlock2Ptr->encryptionKey;
+    *quantity = newValue;
 }
 
 static u16 GetPCItemQuantity(u16 *quantity)
@@ -52,14 +154,14 @@ static void SetPCItemQuantity(u16 *quantity, u16 newValue)
     *quantity = newValue;
 }
 
-void ApplyNewEncryptionKeyToBagItems(u32 newKey)
+void ApplyNewEncryptionKeyToBagItems(u32 newKey) // 原版的加密机制
 {
-    u32 pocket, item;
-    for (pocket = 0; pocket < POCKETS_COUNT; pocket++)
-    {
-        for (item = 0; item < gBagPockets[pocket].capacity; item++)
-            ApplyNewEncryptionKeyToHword(&(gBagPockets[pocket].itemSlots[item].quantity), newKey);
-    }
+    // u32 pocket, item;
+    // for (pocket = 0; pocket < POCKETS_COUNT; pocket++)
+    // {
+    //     for (item = 0; item < gBagPockets[pocket].capacity; item++)
+    //         ApplyNewEncryptionKeyToHword(&(gBagPockets[pocket].itemSlots[item].quantity), newKey);
+    // }
 }
 
 void ApplyNewEncryptionKeyToBagItems_(u32 newKey) // really GF?
@@ -67,9 +169,13 @@ void ApplyNewEncryptionKeyToBagItems_(u32 newKey) // really GF?
     ApplyNewEncryptionKeyToBagItems(newKey);
 }
 
-void DeserializeTmHmItemSlots(void)
+void Deserialize8BitItemSlots(void) // 解压8位储存的道具
 {
-    int i;
+    u16 i;
+    u8 bit;
+    u16 itemId;
+
+    // TM
     for (i = 0; i < BAG_TMHM_COUNT; ++i)
     {
         gTmHmItemSlots[i].itemId = 0;
@@ -77,40 +183,110 @@ void DeserializeTmHmItemSlots(void)
     }
     for (i = 0; i < TM_COUNT; ++i)
     {
-        u8 bit = i % 8;
-        if (gSaveBlock1Ptr->bagPocket_TMHMOwnedFlags[i / 8] & (1<<bit))
+        bit = i % 8;
+        if (gSaveBlock1Ptr->bagPocket_TMHMs[i / 8] & (1<<bit))
             AddBagItem(i + ITEM_TM_START, 1);
+    }
+
+    // 重要道具
+    for (i = 0; i < BAG_KEYITEMS_COUNT; i++)
+    {
+        gKeyItemSlots[i].itemId = 0;
+        SetBagItemQuantity(&(gKeyItemSlots[i].quantity), 0);
+        itemId = sKeyItemList[i];
+        if (itemId != 0)
+        {
+            bit = i % 8;
+            if (gSaveBlock1Ptr->bagPocket_KeyItems[i / 8] & (1<<bit))
+            {
+                AddBagItem(itemId, 1);
+            }    
+        }
+    }
+
+    // 探索道具
+    for (i = 0; i < BAG_EXPLORATIONKIT_COUNT; i++)
+    {
+        gExplorationKitSlots[i].itemId = 0;
+        SetBagItemQuantity(&(gExplorationKitSlots[i].quantity), 0);
+        itemId = sExplorationKitList[i];
+        if (itemId != 0)
+        {
+            bit = i % 8;
+            if (gSaveBlock1Ptr->bagPocket_ExplorationKit[i / 8] & (1<<bit))
+            {
+                AddBagItem(itemId, 1);
+            }    
+        }
+    }
+
+    // 服装
+    for (i = 0; i < BAG_COSTUMES_COUNT; i++)
+    {
+        gCostumeSlots[i].itemId = 0;
+        SetBagItemQuantity(&(gCostumeSlots[i].quantity), 0);
+        itemId = sCostumeList[i];
+        if (itemId != 0)
+        {
+            bit = i % 8;
+            if (gSaveBlock1Ptr->bagPocket_Costume[i / 8] & (1<<bit))
+            {
+                AddBagItem(itemId, 1);
+            }    
+        }
+    }
+
+    // z纯晶
+    for (i = 0; i < BAG_ZCRYSTALS_COUNT; i++)
+    {
+        gZCrystalSlots[i].itemId = 0;
+        SetBagItemQuantity(&(gZCrystalSlots[i].quantity), 0);
+        itemId = sZCrystalList[i];
+        if (itemId != 0)
+        {
+            bit = i % 8;
+            if (gSaveBlock1Ptr->bagPocket_ZCrystal[i / 8] & (1<<bit))
+            {
+                AddBagItem(itemId, 1);
+            }    
+        }
     }
 }
 
 void SetBagItemsPointers(void)
 {
-    gBagPockets[ITEMS_POCKET].itemSlots = gSaveBlock1Ptr->bagPocket_Items;
-    gBagPockets[ITEMS_POCKET].capacity = BAG_ITEMS_COUNT;
-
-    gBagPockets[KEYITEMS_POCKET].itemSlots = gSaveBlock1Ptr->bagPocket_KeyItems;
-    gBagPockets[KEYITEMS_POCKET].capacity = BAG_KEYITEMS_COUNT;
+    gBagPockets[MEDICINE_POCKET].itemSlots = gSaveBlock1Ptr->bagPocket_Medicine;
+    gBagPockets[MEDICINE_POCKET].capacity = BAG_MEDICINE_COUNT;
 
     gBagPockets[BALLS_POCKET].itemSlots = gSaveBlock1Ptr->bagPocket_PokeBalls;
     gBagPockets[BALLS_POCKET].capacity = BAG_POKEBALLS_COUNT;
 
-    gBagPockets[TMHM_POCKET].itemSlots = &gTmHmItemSlots[0];
-    gBagPockets[TMHM_POCKET].capacity = BAG_TMHM_COUNT;
+    gBagPockets[BATTLEITEMS_POCKET].itemSlots = gSaveBlock1Ptr->bagPocket_BattleItems;
+    gBagPockets[BATTLEITEMS_POCKET].capacity = BAG_BATTLEITEMS_COUNT;
+
+    gBagPockets[EXPLORATIONKIT_POCKET].itemSlots = &gExplorationKitSlots[0];
+    gBagPockets[EXPLORATIONKIT_POCKET].capacity = BAG_EXPLORATIONKIT_COUNT;
 
     gBagPockets[BERRIES_POCKET].itemSlots = gSaveBlock1Ptr->bagPocket_Berries;
     gBagPockets[BERRIES_POCKET].capacity = BAG_BERRIES_COUNT;
 
-    gBagPockets[MEDICINES_POCKET].itemSlots = gSaveBlock1Ptr->bagPocket_Medicines;
-    gBagPockets[MEDICINES_POCKET].capacity = BAG_MEDICINES_COUNT;
+    gBagPockets[KEYITEMS_POCKET].itemSlots = &gKeyItemSlots[0];
+    gBagPockets[KEYITEMS_POCKET].capacity = BAG_KEYITEMS_COUNT;
 
-    gBagPockets[BATTLEITEMS_POCKET].itemSlots = gSaveBlock1Ptr->bagPocket_BattleItems;
-    gBagPockets[BATTLEITEMS_POCKET].capacity = BAG_BATTLEITEMS_COUNT;
+    gBagPockets[COLLECTION_POCKET].itemSlots = gSaveBlock1Ptr->bagPocket_Collection;
+    gBagPockets[COLLECTION_POCKET].capacity = BAG_COLLECTION_COUNT;
 
-    gBagPockets[POWERUPS_POCKET].itemSlots = gSaveBlock1Ptr->bagPocket_PowerUps;
-    gBagPockets[POWERUPS_POCKET].capacity = BAG_POWERUPS_COUNT;
+    gBagPockets[TMHM_POCKET].itemSlots = &gTmHmItemSlots[0];
+    gBagPockets[TMHM_POCKET].capacity = BAG_TMHM_COUNT;
 
-    gBagPockets[COSTUMES_POCKET].itemSlots = gSaveBlock1Ptr->bagPocket_Costumes;
+    gBagPockets[COSTUMES_POCKET].itemSlots = &gCostumeSlots[0];
     gBagPockets[COSTUMES_POCKET].capacity = BAG_COSTUMES_COUNT;
+
+    gBagPockets[ZCRYSTALS_POCKET].itemSlots = &gZCrystalSlots[0];
+    gBagPockets[ZCRYSTALS_POCKET].capacity = BAG_ZCRYSTALS_COUNT;
+
+    gBagPockets[MEGASTONES_POCKET].itemSlots = gSaveBlock1Ptr->bagPocket_MegaStones;
+    gBagPockets[MEGASTONES_POCKET].capacity = BAG_MEGASTONE_COUNT;
 }
 
 void CopyItemName(u16 itemId, u8 *dst)
@@ -237,11 +413,16 @@ bool8 CheckBagHasSpace(u16 itemId, u16 count)
             ownedCount = GetBagItemQuantity(&gBagPockets[pocket].itemSlots[i].quantity);
             if (ownedCount + count <= slotCapacity)
                 return TRUE;
-            if (pocket == TMHM_POCKET || pocket == BERRIES_POCKET)
+            if (pocket == TMHM_POCKET 
+                || pocket == BERRIES_POCKET 
+                || pocket == EXPLORATIONKIT_POCKET 
+                || pocket == COSTUMES_POCKET
+                || pocket == ZCRYSTALS_POCKET
+                || pocket == KEYITEMS_POCKET)
                 return FALSE;
             count -= (slotCapacity - ownedCount);
             if (count == 0)
-                break; //should be return TRUE, but that doesn't match
+                return TRUE;
         }
     }
 
@@ -261,7 +442,7 @@ bool8 CheckBagHasSpace(u16 itemId, u16 count)
                 else
                 {
                     count = 0; //should be return TRUE, but that doesn't match
-                    break;
+                    return TRUE;
                 }
             }
         }
@@ -272,10 +453,118 @@ bool8 CheckBagHasSpace(u16 itemId, u16 count)
     return TRUE;
 }
 
-static void setTmOwned(u16 itemId)
-{
-    u8* flagByte = &gSaveBlock1Ptr->bagPocket_TMHMOwnedFlags[(itemId - ITEM_TM_START) / 8];
-    *flagByte = (*flagByte) | (1 << ((itemId - ITEM_TM_START) % 8));
+static void set1BitItemOwned(u16 itemId, u8 pocket)
+{   
+    u8* flagByte;
+    u16 i;
+    switch (pocket)
+     {
+    case EXPLORATIONKIT_POCKET:
+        for (i = 0; i < BAG_EXPLORATIONKIT_COUNT; i++)
+        {
+            if (sExplorationKitList[i] == itemId)
+            {
+                flagByte = &gSaveBlock1Ptr->bagPocket_ExplorationKit[i / 8];
+                *flagByte |= (1 << (i % 8));
+                break;
+            }
+        }
+        break;
+    case TMHM_POCKET:
+        flagByte = &gSaveBlock1Ptr->bagPocket_TMHMs[(itemId - ITEM_TM_START) / 8];
+        *flagByte |= (1 << ((itemId - ITEM_TM_START) % 8));
+        break;
+    case KEYITEMS_POCKET:
+        for (i = 0; i < BAG_KEYITEMS_COUNT; i++)
+        {
+            if (sKeyItemList[i] == itemId)
+            {
+                flagByte = &gSaveBlock1Ptr->bagPocket_KeyItems[i / 8];
+                *flagByte |= (1 << (i % 8));
+                break;
+            }
+        }
+        break;
+    case COSTUMES_POCKET:
+        for (i = 0; i < BAG_COSTUMES_COUNT; i++)
+        {
+            if (sCostumeList[i] == itemId)
+            {
+                flagByte = &gSaveBlock1Ptr->bagPocket_Costume[i / 8];
+                *flagByte |= (1 << (i % 8));
+                break;
+            }
+        }
+        break;
+    case ZCRYSTALS_POCKET:
+        for (i = 0; i < BAG_ZCRYSTALS_COUNT; i++)
+        {
+            if (sZCrystalList[i] == itemId)
+            {
+                flagByte = &gSaveBlock1Ptr->bagPocket_ZCrystal[i / 8];
+                *flagByte |= (1 << (i % 8));
+                break;
+            }
+        }
+        break;
+    }
+}
+
+static void unset1BitItemOwned(u16 itemId, u8 pocket)
+{   
+      u8* flagByte;
+    u16 i;
+    switch (pocket)
+     {
+    case EXPLORATIONKIT_POCKET:
+        for (i = 0; i < BAG_EXPLORATIONKIT_COUNT; i++)
+        {
+            if (sExplorationKitList[i] == itemId)
+            {
+                flagByte = &gSaveBlock1Ptr->bagPocket_ExplorationKit[i / 8];
+                *flagByte &= ~(1 << (i % 8));
+                break;
+            }
+        }
+        break;
+    case TMHM_POCKET:
+        flagByte = &gSaveBlock1Ptr->bagPocket_TMHMs[(itemId - ITEM_TM_START) / 8];
+        *flagByte &= ~(1 << ((itemId - ITEM_TM_START) % 8));
+        break;
+    case KEYITEMS_POCKET:
+        for (i = 0; i < BAG_KEYITEMS_COUNT; i++)
+        {
+            if (sKeyItemList[i] == itemId)
+            {
+                flagByte = &gSaveBlock1Ptr->bagPocket_KeyItems[i / 8];
+                *flagByte &= ~(1 << (i % 8));
+                break;
+            }
+        }
+        break;
+    case COSTUMES_POCKET:
+        for (i = 0; i < BAG_COSTUMES_COUNT; i++)
+        {
+            if (sCostumeList[i] == itemId)
+            {
+                flagByte = &gSaveBlock1Ptr->bagPocket_Costume[i / 8];
+                *flagByte &= ~(1 << (i % 8));
+                break;
+            }
+        }
+        break;
+    case ZCRYSTALS_POCKET:
+        for (i = 0; i < BAG_ZCRYSTALS_COUNT; i++)
+        {
+            if (sZCrystalList[i] == itemId)
+            {
+                flagByte = &gSaveBlock1Ptr->bagPocket_ZCrystal[i / 8];
+                *flagByte &= ~(1 << (i % 8));
+                break;
+            }
+        }
+        break;
+    }
 }
 
 bool8 AddBagItem(u16 itemId, u16 count)
@@ -332,7 +621,12 @@ bool8 AddBagItem(u16 itemId, u16 count)
                 else
                 {
                     // try creating another instance of the item if possible
-                    if (pocket == TMHM_POCKET || pocket == BERRIES_POCKET)
+                    if (pocket == TMHM_POCKET 
+                        || pocket == BERRIES_POCKET 
+                        || pocket == EXPLORATIONKIT_POCKET 
+                        || pocket == COSTUMES_POCKET
+                        || pocket == ZCRYSTALS_POCKET
+                        || pocket == KEYITEMS_POCKET)
                     {
                         Free(newItems);
                         return FALSE;
@@ -363,7 +657,12 @@ bool8 AddBagItem(u16 itemId, u16 count)
                     if (count > slotCapacity)
                     {
                         // try creating a new slot with max capacity if duplicates are possible
-                        if (pocket == TMHM_POCKET || pocket == BERRIES_POCKET)
+                        if (pocket == TMHM_POCKET 
+                            || pocket == BERRIES_POCKET 
+                            || pocket == EXPLORATIONKIT_POCKET 
+                            || pocket == COSTUMES_POCKET
+                            || pocket == ZCRYSTALS_POCKET
+                            || pocket == KEYITEMS_POCKET)
                         {
                             Free(newItems);
                             return FALSE;
@@ -375,8 +674,12 @@ bool8 AddBagItem(u16 itemId, u16 count)
                     {
                         // created a new slot and added quantity
                         SetBagItemQuantity(&newItems[i].quantity, count);
-                        if (pocket == TMHM_POCKET)
-                            setTmOwned(itemId);
+                        if (pocket == TMHM_POCKET 
+                            || pocket == EXPLORATIONKIT_POCKET 
+                            || pocket == COSTUMES_POCKET
+                            || pocket == ZCRYSTALS_POCKET
+                            || pocket == KEYITEMS_POCKET)
+                            set1BitItemOwned(itemId, pocket);
                         count = 0;
                         break;
                     }
@@ -452,6 +755,13 @@ bool8 RemoveBagItem(u16 itemId, u16 count)
             if (GetBagItemQuantity(&itemPocket->itemSlots[var].quantity) == 0)
                 itemPocket->itemSlots[var].itemId = ITEM_NONE;
 
+            if (pocket == TMHM_POCKET 
+                || pocket == EXPLORATIONKIT_POCKET 
+                || pocket == COSTUMES_POCKET
+                || pocket == ZCRYSTALS_POCKET
+                || pocket == KEYITEMS_POCKET)
+                unset1BitItemOwned(itemId, pocket);
+
             if (count == 0)
                 return TRUE;
         }
@@ -475,6 +785,13 @@ bool8 RemoveBagItem(u16 itemId, u16 count)
                 if (GetBagItemQuantity(&itemPocket->itemSlots[i].quantity) == 0)
                     itemPocket->itemSlots[i].itemId = ITEM_NONE;
 
+                if (pocket == TMHM_POCKET 
+                    || pocket == EXPLORATIONKIT_POCKET 
+                    || pocket == COSTUMES_POCKET
+                    || pocket == ZCRYSTALS_POCKET
+                    || pocket == KEYITEMS_POCKET)
+                    unset1BitItemOwned(itemId, pocket);
+                
                 if (count == 0)
                     return TRUE;
             }
@@ -496,6 +813,17 @@ void ClearItemSlots(struct ItemSlot *itemSlots, u8 itemCount)
     {
         itemSlots[i].itemId = ITEM_NONE;
         SetBagItemQuantity(&itemSlots[i].quantity, 0);
+    }
+}
+
+void ClearPcItemSlots(struct PcItemSlot *itemSlots, u8 itemCount)
+{
+    u16 i;
+
+    for (i = 0; i < itemCount; i++)
+    {
+        itemSlots[i].itemId = ITEM_NONE;
+        SetPCItemQuantity(&itemSlots[i].quantity, 0);
     }
 }
 
@@ -541,7 +869,7 @@ bool8 AddPCItem(u16 itemId, u16 count)
     u8 i;
     s8 freeSlot;
     u16 ownedCount;
-    struct ItemSlot *newItems;
+    struct PcItemSlot *newItems;
 
     // Copy PC items
     newItems = AllocZeroed(sizeof(gSaveBlock1Ptr->pcItems));
@@ -614,7 +942,7 @@ void CompactPCItems(void)
         {
             if (gSaveBlock1Ptr->pcItems[i].itemId == 0)
             {
-                struct ItemSlot temp = gSaveBlock1Ptr->pcItems[i];
+                struct PcItemSlot temp = gSaveBlock1Ptr->pcItems[i];
                 gSaveBlock1Ptr->pcItems[i] = gSaveBlock1Ptr->pcItems[j];
                 gSaveBlock1Ptr->pcItems[j] = temp;
             }
@@ -695,6 +1023,32 @@ void MoveItemSlotInList(struct ItemSlot* itemSlots_, u32 from, u32 to_)
     {
         s16 i, count;
         struct ItemSlot firstSlot = itemSlots[from];
+
+        if (to > from)
+        {
+            to--;
+            for (i = from, count = to; i < count; i++)
+                itemSlots[i] = itemSlots[i + 1];
+        }
+        else
+        {
+            for (i = from, count = to; i > count; i--)
+                itemSlots[i] = itemSlots[i - 1];
+        }
+        itemSlots[to] = firstSlot;
+    }
+}
+
+void MovePcItemSlotInList(struct PcItemSlot* itemSlots_, u32 from, u32 to_)
+{
+    // dumb assignments needed to match
+    struct PcItemSlot *itemSlots = itemSlots_;
+    u32 to = to_;
+
+    if (from != to)
+    {
+        s16 i, count;
+        struct PcItemSlot firstSlot = itemSlots[from];
 
         if (to > from)
         {

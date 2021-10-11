@@ -325,10 +325,10 @@ bool8 MenuHelpers_CallLinkSomething(void)
         return TRUE;
 }
 
-void SetItemListPerPageCount(struct ItemSlot *slots, u8 slotsCount, u8 *pageItems, u8 *totalItems, u8 maxPerPage)
+void SetItemListPerPageCount(struct PcItemSlot *slots, u8 slotsCount, u8 *pageItems, u8 *totalItems, u8 maxPerPage)
 {
     u16 i;
-    struct ItemSlot *slots_ = slots;
+    struct PcItemSlot *slots_ = slots;
 
     // Count the number of non-empty item slots
     *totalItems = 0;

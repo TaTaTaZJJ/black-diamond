@@ -279,27 +279,31 @@ const u8 *const gPyramidBagMenu_ReturnToStrings[] =
 };
 
 const u8 gText_ReturnToVar1[] = _("返回{STR_VAR_1}。");
-const u8 gText_ItemsPocket[] = _("道具");
 const u8 gText_PokeBallsPocket[] = _("精灵球");
 const u8 gText_TMHMPocket[] = _("招式学习器");
 const u8 gText_BerriesPocket[] = _("树果");
-const u8 gText_KeyItemsPocket[] = _("重要道具");
-const u8 gText_MedicinesPocket[] = _("回复");
-const u8 gText_BattleItemsPocket[] = _("对战道具");
-const u8 gText_PowerUpsPocket[] = _("强化道具");
+const u8 gText_KeyItemsPocket[] = _("重要");
+const u8 gText_MedicinePocket[] = _("药品");
+const u8 gText_BattleItemsPocket[] = _("对战");
+const u8 gText_ExplorationKitPocket[] = _("探索");
+const u8 gText_CollectionPocket[] = _("收集");
 const u8 gText_CostumesPocket[] = _("服装");
+const u8 gText_ZCrystalsPocket[] = _("Z纯晶");
+const u8 gText_MegaStonesPocket[] = _("超级石");
 
 const u8 *const gPocketNamesStringsTable[] =
 {
-    [ITEMS_POCKET] = gText_ItemsPocket,
-    [MEDICINES_POCKET] = gText_MedicinesPocket,
+    [MEDICINE_POCKET] = gText_MedicinePocket,
     [BALLS_POCKET] = gText_PokeBallsPocket,
     [BATTLEITEMS_POCKET] = gText_BattleItemsPocket,
+    [EXPLORATIONKIT_POCKET] = gText_ExplorationKitPocket,
     [BERRIES_POCKET] = gText_BerriesPocket,
-    [POWERUPS_POCKET] = gText_PowerUpsPocket,
+    [KEYITEMS_POCKET] = gText_KeyItemsPocket,
+    [COLLECTION_POCKET] = gText_CollectionPocket,
     [TMHM_POCKET]  = gText_TMHMPocket,
     [COSTUMES_POCKET] = gText_CostumesPocket,
-    [KEYITEMS_POCKET] = gText_KeyItemsPocket,
+    [ZCRYSTALS_POCKET] = gText_ZCrystalsPocket,
+    [MEGASTONES_POCKET] = gText_MegaStonesPocket,
 };
 
 const u8 gText_NumberItem_TMBerry[] = _("{NO}{STR_VAR_1}{CLEAR 0x07}{STR_VAR_2}");
@@ -710,12 +714,15 @@ const u8 gText_Tough2[] = _("强壮");
 const u8 gText_Items[] = _("道具");
 const u8 gText_Key_Items[] = _("重要道具");
 const u8 gText_Poke_Balls[] = _("精灵球");
-const u8 gText_TMs_Hms[] = _("技能&秘技");
+const u8 gText_TMs_Hms[] = _("招式学习器");
 const u8 gText_Berries2[] = _("树果");
-const u8 gText_Medicines[] = _("回复");
+const u8 gText_Medicine[] = _("药品道具");
 const u8 gText_BattleItems[] = _("对战道具");
-const u8 gText_PowerUps[] = _("强化道具");
+const u8 gText_Exploration_Kit[] = _("探索道具");
 const u8 gText_Costumes[] = _("服装");
+const u8 gText_Collection[] = _("收集道具");
+const u8 gText_Z_Crystals[] = _("Z纯晶");
+const u8 gText_Mega_Stones[] = _("超级石");
 const u8 gText_SomeonesPC[] = _("某人的电脑");
 const u8 gText_LanettesPC[] = _("真弓的电脑");
 const u8 gText_PlayersPC[] = _("{PLAYER}的电脑");

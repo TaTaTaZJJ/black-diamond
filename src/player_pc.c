@@ -222,7 +222,7 @@ static const struct MenuAction sItemStorage_MenuActions[] =
     [MENU_EXIT]     = { gText_Cancel,       ItemStorage_Exit }
 };
 
-static const struct ItemSlot sNewGamePCItems[] =
+static const struct PcItemSlot sNewGamePCItems[] =
 {
     { ITEM_POTION, 1 },
     { ITEM_NONE, 0 }
@@ -359,7 +359,7 @@ static const u8 sSwapArrowTextColors[] = {TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRA
 void NewGameInitPCItems(void)
 {
     u8 i = 0;
-    ClearItemSlots(gSaveBlock1Ptr->pcItems, PC_ITEMS_COUNT);
+    ClearPcItemSlots(gSaveBlock1Ptr->pcItems, PC_ITEMS_COUNT);
     for(; sNewGamePCItems[i].itemId != ITEM_NONE && GET_QUANTITY(i) &&
         AddPCItem(sNewGamePCItems[i].itemId, GET_QUANTITY(i)) == TRUE; i++);
 }
@@ -1316,7 +1316,7 @@ static void ItemStorage_FinishItemSwap(u8 taskId, bool8 canceled)
 
     if (!canceled && sItemStorageMenu->toSwapPos != newPos && sItemStorageMenu->toSwapPos != newPos - 1)
     {
-        MoveItemSlotInList(gSaveBlock1Ptr->pcItems, sItemStorageMenu->toSwapPos, newPos);
+        MovePcItemSlotInList(gSaveBlock1Ptr->pcItems, sItemStorageMenu->toSwapPos, newPos);
         ItemStorage_RefreshListMenu();
     }
     if (sItemStorageMenu->toSwapPos < newPos)

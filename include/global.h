@@ -573,6 +573,12 @@ struct WarpData
 struct ItemSlot
 {
     u16 itemId;
+    u8 quantity;
+};
+
+struct PcItemSlot
+{
+    u16 itemId;
     u16 quantity;
 };
 
@@ -1004,20 +1010,20 @@ struct SaveBlock1
     /*0x490*/ u32 money;
     /*0x494*/ u16 coins;
     /*0x496*/ u16 registeredItem; // registered for use with SELECT button
-    /*0x498*/ struct ItemSlot pcItems[PC_ITEMS_COUNT];
-    /*0x560*/ struct ItemSlot bagPocket_Items[BAG_ITEMS_COUNT];
-    /*0x5D8*/ struct ItemSlot bagPocket_KeyItems[BAG_KEYITEMS_COUNT];
-    /*0x650*/ struct ItemSlot bagPocket_PokeBalls[BAG_POKEBALLS_COUNT];
-    /*0x690*/ //struct ItemSlot bagPocket_TMHM[BAG_TMHM_COUNT];
-              u8 bagPocket_TMHMOwnedFlags[36]; //allow for a total of 288 TMs/HMs
-              u8 bagPocket_TMHMPadding[220]; //do not touch the save layout, take 242 bytes of free space
-    /*0x790*/ struct ItemSlot bagPocket_Berries[BAG_BERRIES_COUNT];
-              struct ItemSlot bagPocket_Medicines[BAG_MEDICINES_COUNT];
+    /*0x498*/ struct PcItemSlot pcItems[PC_ITEMS_COUNT];
+              struct ItemSlot bagPocket_Medicine[BAG_MEDICINE_COUNT];
+              struct ItemSlot bagPocket_PokeBalls[BAG_POKEBALLS_COUNT];
               struct ItemSlot bagPocket_BattleItems[BAG_BATTLEITEMS_COUNT];
-              struct ItemSlot bagPocket_PowerUps[BAG_POWERUPS_COUNT];
-              struct ItemSlot bagPocket_Costumes[BAG_COSTUMES_COUNT];
+              struct ItemSlot bagPocket_Berries[BAG_BERRIES_COUNT];
+              struct ItemSlot bagPocket_Collection[BAG_COLLECTION_COUNT];
+              struct ItemSlot bagPocket_MegaStones[BAG_MEGASTONE_COUNT];
+              u8 bagPocket_KeyItems[BAG_KEYITEMS_BYTES];
+              u8 bagPocket_ExplorationKit[BAG_EXPLORATIONKIT_BYTES];
+              u8 bagPocket_TMHMs[BAG_THHM_BYTES];
+              u8 bagPocket_Costume[BAG_COSTUMES_BYTES];
+              u8 bagPocket_ZCrystal[BAG_ZCRYSTALS_BYTES];
+              u8 filler1[30];                       // 预留空位
     /*0x848*/ struct Pokeblock pokeblocks[POKEBLOCKS_COUNT];
-    /*0x988*/ u8 filler1[0x34]; // Previously Dex Flags, feel free to remove.
     /*0x9BC*/ u16 berryBlenderRecords[3];
     /*0x9C2*/ u8 field_9C2[6];
     /*0x9C8*/ u16 trainerRematchStepCounter;

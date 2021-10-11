@@ -8063,6 +8063,8 @@ extern const u32 gBagScreen_GfxTileMap[];
 extern const u32 gBagScreenFemale_Pal[];
 extern const u32 gBagScreenMale_Pal[];
 extern const u8 gBagMenuHMIcon_Gfx[];
+extern const u32 gBagPocketIconTiles[];
+extern const u32 gBagSelectedPocketIconTiles[];
 
 // item menu icons graphics
 extern const u32 gBagMaleTiles[];

@@ -97,12 +97,6 @@ static const union AnimCmd sSpriteAnim_Bag_BattleItems[] =
     ANIMCMD_END
 };
 
-static const union AnimCmd sSpriteAnim_Bag_PowerUps[] =
-{
-    ANIMCMD_FRAME(256, 4),
-    ANIMCMD_END
-};
-
 static const union AnimCmd sSpriteAnim_Bag_TMsHMs[] =
 {
     ANIMCMD_FRAME(320, 4),
@@ -118,15 +112,17 @@ static const union AnimCmd sSpriteAnim_Bag_Berries[] =
 static const union AnimCmd *const sBagSpriteAnimTable[] =
 {
     sSpriteAnim_Bag_Closed,
-    sSpriteAnim_Bag_Items,
     sSpriteAnim_Bag_Medicines,
     sSpriteAnim_Bag_Pokeballs,
     sSpriteAnim_Bag_BattleItems,
+    sSpriteAnim_Bag_Items,
     sSpriteAnim_Bag_Berries,
-    sSpriteAnim_Bag_PowerUps,
+    sSpriteAnim_Bag_KeyItems,
+    sSpriteAnim_Bag_Items,
     sSpriteAnim_Bag_TMsHMs,
     sSpriteAnim_Bag_Costumes,
-    sSpriteAnim_Bag_KeyItems
+    sSpriteAnim_Bag_Items,
+    sSpriteAnim_Bag_Items,
 };
 
 static const union AffineAnimCmd sSpriteAffineAnim_BagNormal[] =
@@ -484,7 +480,7 @@ void RemoveBagSprite(u8 id)
 void AddBagVisualSprite(u8 bagPocketId)
 {
     u8 *spriteId = &gBagMenu->spriteIds[ITEMMENUSPRITE_BAG];
-    *spriteId = CreateSprite(&sBagSpriteTemplate, 68, 66, 0);
+    *spriteId = CreateSprite(&sBagSpriteTemplate, 39, 66, 0);
     SetBagVisualPocketId(bagPocketId, FALSE);
 }
 
@@ -589,7 +585,7 @@ void AddBagItemIconSprite(u16 itemId, u8 id)
         {
             *spriteId = iconSpriteId;
             gSprites[iconSpriteId].x2 = 24;
-            gSprites[iconSpriteId].y2 = 88;
+            gSprites[iconSpriteId].y2 = 140;
         }
     }
 }
