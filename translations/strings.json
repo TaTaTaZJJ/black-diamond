@@ -1578,7 +1578,7 @@
         },
         {
             "label": "gText_PokedollarVar1",
-            "zh": "${STR_VAR_1}",
+            "zh": "{STR_VAR_1}¥",
             "en": "¥{STR_VAR_1}"
         },
         {
@@ -5733,7 +5733,7 @@
         },
         {
             "label": "gText_PokeDollar",
-            "zh": "$",
+            "zh": "¥",
             "en": "¥"
         },
         {
