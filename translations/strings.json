@@ -1258,7 +1258,7 @@
         },
         {
             "label": "gText_KeyItemsPocket",
-            "zh": "重要道具",
+            "zh": "重要",
             "en": "KEY ITEMS"
         },
         {
@@ -3283,7 +3283,7 @@
         },
         {
             "label": "gText_TMs_Hms",
-            "zh": "技能&秘技",
+            "zh": "招式学习器",
             "en": "TMs & HMs"
         },
         {
@@ -8797,44 +8797,74 @@
             "en": "You already have this item.{PAUSE_UNTIL_PRESS}"
         },
         {
-            "label": "gText_Medicines",
-            "zh": "回复",
-            "en": "MEDICINES"
+            "label": "gText_Medicine",
+            "zh": "药品道具",
+            "en": "MEDICINE"
         },
         {
             "label": "gText_BattleItems",
             "zh": "对战道具",
-            "en": "BATTLE ITEMS"
+            "en": "BATTLE ITEM"
         },
         {
-            "label": "gText_PowerUps",
-            "zh": "强化道具",
-            "en": "POWER-UPS"
+            "label": "gText_Exploration_Kit",
+            "zh": "探索道具",
+            "en": "EXPLORATION"
         },
         {
             "label": "gText_Costumes",
             "zh": "服装",
-            "en": "COSTUMES"
+            "en": "COSTUME"
         },
         {
-            "label": "gText_MedicinesPocket",
-            "zh": "回复",
-            "en": "MEDICINES"
+            "label": "gText_Collection",
+            "zh": "收藏品",
+            "en": "COLLECTION"
+        },
+        {
+            "label": "gText_Z_Crystals",
+            "zh": "Z纯晶",
+            "en": "Z-CRYSTAL"
+        },
+        {
+            "label": "gText_Mega_Stones",
+            "zh": "超级石",
+            "en": "MEGA STONE"
+        },
+        {
+            "label": "gText_MedicinePocket",
+            "zh": "药品",
+            "en": "MEDICINE"
         },
         {
             "label": "gText_BattleItemsPocket",
-            "zh": "对战道具",
+            "zh": "对战",
             "en": "BATTLE ITEMS"
         },
         {
-            "label": "gText_PowerUpsPocket",
-            "zh": "强化道具",
-            "en": "POWER-UPS"
+            "label": "gText_ExplorationKitPocket",
+            "zh": "探索",
+            "en": "EXPLORATION"
         },
         {
             "label": "gText_CostumesPocket",
             "zh": "服装",
             "en": "COSTUMES"
+        },
+        {
+            "label": "gText_CollectionPocket",
+            "zh": "收藏品",
+            "en": "COLLECTION"
+        },
+        {
+            "label": "gText_ZCrystalsPocket",
+            "zh": "Z纯晶",
+            "en": "Z-CRYSTALS"
+        },
+        {
+            "label": "gText_MegaStonesPocket",
+            "zh": "超级石",
+            "en": "MEGA STONES"
         }
     ]
 }
